@@ -16,6 +16,7 @@ The application supports:
 - Real-time administrator alerts for every completed sale
 - Daily, monthly, and yearly audit metrics from SQLite
 - Administrator reset control for clearing business data
+- Isolated developer security console for authentication and session telemetry
 - Persistent SQLite storage for users, products, orders, and order items
 
 ## 1. Requirements
@@ -133,6 +134,32 @@ This is the initial administrator credential. Change it before using the applica
 The application authenticates with usernames, not email addresses. Worker credentials are created directly by an administrator from the Team page.
 
 ## 5. User Roles and Permissions
+
+### Super administrator / developer security console
+
+The super administrator is a separate platform-security identity. It is not a company administrator and cannot access company state, inventory, POS, orders, revenue, reports, products, workers, or reset controls. A successful login redirects to the separate `/security.html` console, which has its own dark monitoring interface.
+
+The initial security account is created from environment variables:
+
+```text
+SUPER_ADMIN_USERNAME=""""
+SUPER_ADMIN_PASSWORD=...///''''
+```
+
+If the variables are not set, those development defaults are used. Set both variables in Render before production deployment. The security console reports:
+
+- Failed login count
+- Failed attempts grouped by attempted username
+- Successful login count
+- Active authenticated company sessions
+- Source IP and user agent for security events
+- Login, logout, and inactive/invalid-account events
+- Persistent event count stored in SQLite
+
+The console intentionally does not display business information. Security data is served only through `/api/security/state` and `/api/security/events`, which require the `Super administrator` role.
+
+To enter the developer console, use the normal login page with the configured super administrator credentials. The browser redirects that account to `/security.html`. The company administrator account continues to open the orange company workspace instead.
+
 
 ### Administrator
 

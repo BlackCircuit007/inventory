@@ -1,0 +1,24 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Security Console | SIGURA LTD</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="security.css">
+</head>
+<body>
+  <div class="security-shell">
+    <aside class="security-sidebar"><div class="security-brand"><span class="shield">+</span><span>SECURITY<br><b>CONSOLE</b></span></div><div class="scope"><span class="pulse"></span><span><b>PROTECTED SCOPE</b><small>Platform telemetry only</small></span></div><nav><span class="nav-kicker">MONITORING</span><button class="security-nav active">Command center</button><button class="security-nav">Authentication events</button><button class="security-nav">Active sessions</button></nav><div class="security-sidebar-foot"><p>Developer access</p><strong id="security-username">SECURITY CORE</strong><button id="security-logout">Terminate session</button></div></aside>
+    <main class="security-main"><header class="security-topbar"><div><span class="route">SECURITY / INTERNAL</span><h1>Command center</h1></div><div class="live-indicator"><span class="pulse"></span> LIVE MONITORING <small id="last-updated">Updating now</small></div></header><div id="security-toast" class="security-toast"></div>
+      <section class="security-intro"><div><span class="route">PLATFORM OBSERVABILITY</span><h2>Know what is happening.<br><em>Leave the business alone.</em></h2><p>This console is isolated from company operations. It reports access and service health signals, never products, sales, customers, or financial records.</p></div><div class="posture"><span class="posture-ring">OK</span><span><b>Security posture</b><small>Monitoring is active</small></span></div></section>
+      <section class="security-metrics"><div class="security-metric"><span>ACTIVE VISITORS</span><strong id="active-visitors">0</strong><small>Authenticated company sessions right now</small></div><div class="security-metric warning"><span>FAILED LOGINS</span><strong id="failed-logins">0</strong><small>Recorded attempts across all usernames</small></div><div class="security-metric"><span>SUCCESSFUL LOGINS</span><strong id="successful-logins">0</strong><small>Successful authentications recorded</small></div><div class="security-metric"><span>EVENTS STORED</span><strong id="total-events">0</strong><small>Persistent security audit records</small></div></section>
+      <section class="security-grid"><div class="security-panel events-panel"><div class="panel-top"><div><span class="route">RECENT SIGNALS</span><h3>Authentication activity</h3></div><span class="live-tag">STREAMING</span></div><div id="security-events" class="event-list"><div class="security-empty">No security events recorded yet.</div></div></div><div class="security-panel users-panel"><div class="panel-top"><div><span class="route">ATTACK SURFACE</span><h3>Failed attempts by username</h3></div></div><div id="failed-by-user" class="failed-list"><div class="security-empty">No failed attempts.</div></div></div></section>
+      <section class="security-panel sessions-panel"><div class="panel-top"><div><span class="route">CURRENT ACCESS</span><h3>Authenticated sessions</h3></div><span id="session-count" class="session-count">0 sessions</span></div><div id="active-sessions" class="session-list"><div class="security-empty">No active company sessions.</div></div></section>
+    </main>
+  </div>
+  <script src="security.js"></script>
+</body>
+</html>
