@@ -1,0 +1,104 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Stockroom inventory and point of sale workspace">
+  <title>Stockroom | Inventory and POS</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+  <style>
+    [hidden]{display:none!important}
+    :root{--ink:#2d2119;--muted:#8a7668;--line:#f0dfd1;--paper:#fffaf5;--white:#fff;--green:#e87522;--green-dark:#a94f0b;--mint:#fff0df;--yellow:#ffc857;--coral:#cf5a3d;--shadow:0 12px 35px rgba(126,65,24,.08)}
+    body{background:var(--paper)}
+    .login-art,.sidebar{background:var(--green-dark)}
+    .login-art h1 em,.brand-mark{color:var(--green-dark)}
+    .brand-mark{background:var(--yellow)}
+    .nav-item:hover,.nav-item.active{background:#c86318}
+    .tip-card{background:#c86318}
+    .primary-button{background:var(--green)}
+    .primary-button:hover{background:var(--green-dark)}
+    .register-total,.pos-product-image,.filter-button.active{background:var(--mint)}
+    .metric-card .metric-detail{display:block;color:var(--muted);font-size:10px;line-height:1.5;margin-top:8px}
+    .team-action{width:100%;margin-top:16px;padding:9px;font-size:11px}
+    .reset-button{color:#b84939;border-color:#f0c7bb}
+    .reset-button:hover{background:#fff0ed}
+  </style>
+</head>
+<body>
+  <div id="login-screen" class="login-screen">
+    <div class="login-art" aria-hidden="true">
+      <div class="brand-mark large">S</div>
+      <p class="eyebrow">STOCKROOM / OPERATIONS</p>
+      <h1>Keep every sale<br><em>in its place.</em></h1>
+      <p class="login-art-copy">A calm, clear workspace for inventory, checkout, and the numbers behind your business.</p>
+      <div class="login-stat"><strong>98.4%</strong><span>stock accuracy this month</span></div>
+    </div>
+    <div class="login-panel">
+      <div class="mobile-brand"><span class="brand-mark">S</span> STOCKROOM</div>
+      <p class="eyebrow">WELCOME BACK</p>
+      <h2>Sign in to your workspace</h2>
+      <p class="muted">Enter your administrator credentials to access the workspace.</p>
+      <form id="login-form" class="login-form">
+        <label>Username<input id="login-username" type="text" value="admin" required></label>
+        <label>Password<input id="login-password" type="password" value="admin123" required></label>
+        <button class="primary-button full-width" type="submit">Enter workspace <span>-></span></button>
+      </form>
+          <p id="login-error" class="error-message" hidden>That username or password is not recognized.</p>
+    </div>
+  </div>
+
+  <div id="app-shell" class="app-shell" hidden>
+    <aside class="sidebar">
+      <div class="sidebar-header"><span class="brand-mark">S</span><span>STOCKROOM</span></div>
+      <div class="workspace-switcher"><span class="workspace-dot"></span><span><strong>Harbor & Pine</strong><small>Retail workspace</small></span><span class="chevron">v</span></div>
+      <nav class="main-nav" aria-label="Main navigation">
+        <p class="nav-label">WORKSPACE</p>
+        <button class="nav-item active" data-view="overview"><span class="nav-icon">+</span>Overview</button>
+        <button class="nav-item" data-view="inventory"><span class="nav-icon">[]</span>Inventory<span class="nav-badge" id="low-stock-badge">3</span></button>
+        <button class="nav-item" data-view="pos"><span class="nav-icon">₦</span>Point of sale</button>
+        <button class="nav-item admin-only" data-view="orders"><span class="nav-icon">=</span>Orders</button>
+        <p class="nav-label admin-only">MANAGEMENT</p>
+        <button class="nav-item admin-only" data-view="team"><span class="nav-icon">&</span>Team</button>
+        <button class="nav-item admin-only" data-view="reports"><span class="nav-icon">%</span>Reports</button>
+      </nav>
+      <div class="sidebar-bottom">
+        <div class="tip-card"><span class="tip-spark">*</span><strong>Quick tip</strong><p>Low stock items are flagged when they reach their reorder point.</p></div>
+        <button class="nav-item" id="logout-button"><span class="nav-icon">&lt;</span>Sign out</button>
+        <div class="user-mini"><div class="avatar" id="sidebar-avatar">AR</div><span><strong id="sidebar-name">Alex Rivera</strong><small id="sidebar-role">Administrator</small></span><span class="more">...</span></div>
+      </div>
+    </aside>
+
+    <main class="main-content">
+      <header class="topbar">
+        <button id="mobile-menu" class="icon-button mobile-only" aria-label="Open menu">=</button>
+        <div class="breadcrumb"><span id="page-kicker">Workspace</span><strong id="page-title">Overview</strong></div>
+        <div class="topbar-actions"><button class="icon-button" title="Notifications" aria-label="Notifications"><span class="notification-dot"></span>!</button><div class="topbar-date" id="today-date"></div></div>
+      </header>
+      <div id="toast" class="toast" role="status"></div>
+
+      <section id="view-overview" class="view active-view">
+        <div class="page-intro"><div><p class="eyebrow">SATURDAY, SEPTEMBER 5, 2026</p><h1>Welcome, <span id="greeting-name">admin</span>.</h1><p class="muted">Here is what is happening across your store today.</p></div><button class="primary-button" data-view-target="pos">Open register <span>-></span></button></div>
+        <div class="metric-grid" id="overview-metrics"></div>
+        <div class="content-grid two-thirds"><div class="panel sales-panel admin-only"><div class="panel-heading"><div><p class="eyebrow">REVENUE</p><h2>Sales overview</h2></div><select id="sales-period" class="select-control"><option>Last 7 days</option><option>Last 30 days</option></select></div><div class="chart-wrap"><div class="chart-y" id="chart-y"><span>₦0</span><span>₦0</span><span>₦0</span><span>₦0</span><span>₦0</span></div><div class="bar-chart" id="sales-chart"></div></div><div class="chart-legend"><span><i class="legend-dot filled"></i>Revenue</span><span><i class="legend-dot"></i>Orders</span></div></div><div class="panel activity-panel admin-only"><div class="panel-heading"><div><p class="eyebrow">LIVE FEED</p><h2>Recent activity</h2></div><button class="text-button" data-view-target="orders">View all</button></div><div id="activity-list" class="activity-list"></div></div></div>
+        <div class="content-grid three-columns"><div class="panel"><div class="panel-heading"><div><p class="eyebrow">ATTENTION</p><h2>Low stock</h2></div><button class="text-button" data-view-target="inventory">Manage</button></div><div id="low-stock-list" class="compact-list"></div></div><div class="panel admin-only"><div class="panel-heading"><div><p class="eyebrow">TODAY</p><h2>Register status</h2></div><span class="status-pill success">Open</span></div><div class="register-status"><div class="register-total"><span>Current cash drawer</span><strong id="cash-drawer">₦0.00</strong></div><div class="register-row"><span>Opening float</span><strong>₦0.00</strong></div><div class="register-row"><span>Cash sales</span><strong id="cash-sales">₦0.00</strong></div><div class="register-row"><span>Card sales</span><strong id="card-sales">₦0.00</strong></div></div></div><div class="panel"><div class="panel-heading"><div><p class="eyebrow">TEAM</p><h2>Team status</h2></div><button class="text-button admin-only" data-view-target="team">Manage</button></div><div id="on-shift-list" class="shift-list"></div></div></div>
+      </section>
+
+      <section id="view-inventory" class="view"><div class="page-intro"><div><p class="eyebrow">CATALOG & STOCK</p><h1>Inventory</h1><p class="muted">Know what is on the shelf before it is gone.</p></div><button class="primary-button admin-only" id="add-product-button">+ Add product</button></div><div class="toolbar"><div class="search-box"><span>/</span><input id="inventory-search" placeholder="Search products, SKU or category"></div><div class="filter-group"><button class="filter-button active" data-filter="all">All <span id="all-count">0</span></button><button class="filter-button" data-filter="low">Low stock <span id="low-count">0</span></button></div></div><div class="panel table-panel"><table><thead><tr><th>Product</th><th>SKU</th><th>Category</th><th>Price</th><th>In stock</th><th>Status</th><th></th></tr></thead><tbody id="inventory-table"></tbody></table><div id="inventory-empty" class="empty-state" hidden>No products match your search.</div></div></section>
+
+      <section id="view-pos" class="view"><div class="page-intro compact-intro"><div><p class="eyebrow">SALES REGISTER</p><h1>Point of sale</h1><p class="muted">Sell with confidence. Stock updates automatically.</p></div><div class="register-chip"><span class="status-dot"></span> Register 01 <small>Open</small></div></div><div class="pos-layout"><div class="pos-products"><div class="toolbar pos-toolbar"><div class="search-box"><span>/</span><input id="pos-search" placeholder="Search catalog"></div><div class="category-tabs" id="category-tabs"></div></div><div id="pos-product-grid" class="pos-product-grid"></div></div><aside class="cart-panel"><div class="cart-heading"><div><p class="eyebrow">CURRENT SALE</p><h2>Cart <span id="cart-count">0</span></h2></div><button id="clear-cart" class="text-button">Clear</button></div><div id="cart-items" class="cart-items"><div class="cart-empty"><span>+</span><strong>Your cart is empty</strong><p>Select products to start a sale.</p></div></div><div class="cart-summary"><div><span>Total</span><strong id="cart-subtotal">₦0.00</strong></div><div class="cart-total"><span>Amount due</span><strong id="cart-total">₦0.00</strong></div><button id="checkout-button" class="primary-button full-width" disabled>Charge <span id="charge-total">₦0.00</span> <span>-></span></button></div></aside></div></section>
+
+      <section id="view-orders" class="view admin-only"><div class="page-intro"><div><p class="eyebrow">TRANSACTION HISTORY</p><h1>Orders</h1><p class="muted">Every sale, receipt, and refund in one place.</p></div><button class="secondary-button" id="export-orders">Download CSV <span>v</span></button></div><div class="metric-grid compact-metrics" id="order-metrics"></div><div class="panel table-panel"><table><thead><tr><th>Order</th><th>Date & time</th><th>Customer</th><th>Staff</th><th>Payment</th><th>Total</th><th>Status</th></tr></thead><tbody id="orders-table"></tbody></table><div id="orders-empty" class="empty-state" hidden>No orders yet. Completed sales will appear here.</div></div></section>
+
+      <section id="view-team" class="view"><div class="page-intro"><div><p class="eyebrow">PEOPLE & PERMISSIONS</p><h1>Team</h1><p class="muted">Keep your floor covered and your access intentional.</p></div><button class="primary-button" id="invite-button">+ Invite teammate</button></div><div class="team-grid" id="team-grid"></div></section>
+
+      <section id="view-reports" class="view"><div class="page-intro"><div><p class="eyebrow">FINANCE & PERFORMANCE</p><h1>Reports</h1><p class="muted">Real audit figures from your database, grouped by day, month, and year.</p></div><button class="secondary-button reset-button" id="reset-data-button">Reset business data</button></div><div class="metric-grid" id="report-metrics"></div><div class="content-grid two-thirds"><div class="panel report-panel"><div class="panel-heading"><div><p class="eyebrow">PRODUCT PERFORMANCE</p><h2>Top products</h2></div><span class="muted">By recorded sales</span></div><div id="top-products" class="ranked-list"></div></div><div class="panel report-panel"><div class="panel-heading"><div><p class="eyebrow">PAYMENT MIX</p><h2>How customers pay</h2></div></div><div id="payment-mix" class="payment-mix"></div></div></div></section>
+    </main>
+  </div>
+
+  <div id="modal-root"></div>
+  <script src="app.js"></script>
+</body>
+</html>

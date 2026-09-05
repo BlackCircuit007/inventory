@@ -51,6 +51,56 @@ The Node version must be at least `22.5.0`.
 
 `stockroom.db` is the source of truth for business data. The browser does not use localStorage for products, users, orders, passwords, or stock quantities.
 
+## 2.1 Deploy to Render
+
+The repository includes `render.yaml`, which configures a Node web service and a 1 GB persistent disk for SQLite. The persistent disk is important: without it, the database would be lost when Render restarts or redeploys the service.
+
+1. Push this project to GitHub, including `server.js`, `app.js`, `index.html`, `styles.css`, `package.json`, and `render.yaml`.
+2. Sign in to [Render](https://render.com).
+3. Select `New` -> `Blueprint`.
+4. Connect the GitHub repository containing this project.
+5. Select the branch to deploy, normally `main`.
+6. Review the service name `stockroom-nigeria` and select `Apply`.
+7. Wait for the first build and deployment to finish.
+8. Open the Render URL shown on the service page.
+
+The blueprint uses:
+
+```text
+Build command: npm install
+Start command: npm start
+Runtime: Node
+Database file: /opt/render/project/src/data/stockroom.db
+```
+
+The Render Starter plan is required for the persistent disk in this blueprint. A free web service can run the app temporarily, but its SQLite data is not durable without persistent storage.
+
+After deployment, verify the service by opening the Render URL and signing in with:
+
+```text
+Username: admin
+Password: admin123
+```
+
+Change the administrator password before using the deployed service for real sales. Also confirm that `https://your-render-url.onrender.com/api/state` returns an authentication error when opened while signed out; that confirms the API is not publicly exposing business data.
+
+### Render environment variables
+
+The blueprint sets these automatically:
+
+| Variable | Value | Purpose |
+| --- | --- | --- |
+| `NODE_VERSION` | `22.18.0` | Provides the built-in `node:sqlite` module |
+| `DB_PATH` | `/opt/render/project/src/data/stockroom.db` | Stores SQLite on the persistent disk |
+
+### Updating the deployed app
+
+With `autoDeploy: true`, push changes to the selected GitHub branch and Render will build and deploy them automatically. Do not delete the persistent disk when deleting or recreating the service unless you have a verified backup of `stockroom.db`.
+
+### Backups on Render
+
+Before a reset or major change, download or copy the database using a maintenance process. The database is located at `/opt/render/project/src/data/stockroom.db` inside the Render service. The in-app `Reset business data` button intentionally deletes products, orders, and order items, so use it only when you really want a clean business setup.
+
 ## 3. Start the Application
 
 Open PowerShell in the project directory:
@@ -623,5 +673,6 @@ The following behaviors are intentionally simple in this first database-backed v
 - The order total should be recalculated on the server before public deployment.
 
 These limitations do not affect the core SQLite persistence, POS transaction, role enforcement, or live administrator alert behavior.
-#   i n v e n t o r y  
+#   i n v e n t o r y 
+ 
  

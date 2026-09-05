@@ -1,0 +1,6 @@
+stockroom.db
+stockroom.db-shm
+stockroom.db-wal
+backups/
+node_modules/
+.env
